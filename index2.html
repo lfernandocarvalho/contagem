@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Contagem Regressiva - 26/07/2034</title>
+  <style>
+   body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      padding: 40px 20px;
+    }
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    header p {
+      font-size: 1.2em;
+      opacity: 0.9;
+    }
+    #countdown {
+      font-size: 1.8em;
+      margin-top: 30px;
+      color: #ffdd00;
+    }
+    .progress-container {
+      width: 80%;
+      background-color: rgba(255,255,255,0.2);
+      border-radius: 25px;
+      margin: 40px auto;
+      height: 30px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 25px;
+      transition: width 1s ease, background 1s ease;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.1);
+      }
+
+      h2 { margin-bottom: 1.5rem; font-weight: 300; letter-spacing: 1px; }
+      
+      #contador { 
+        font-size: 1.5rem; 
+        font-weight: bold; 
+        line-height: 1.6;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      }
+      .destaque { color: #00d4ff; }    
+
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      font-size: 0.9em;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Contagem Regressiva</h1>
+    <p>Estamos aguardando o grande dia: <strong>26 de julho de 2034, previsão de aposentadoria!</strong></p>
+	<hr>  
+	<p><strong>Data de ingresso na UFS (Serviço Público Federal): 05/01/1993</strong></p>
+	<hr>
+	<p>Data de ingresso na Embrapa (Empresa Pública Federal): 26/12/1994</p>
+	<p>Data de ingresso no TRE-SE (Serviço Público Federal): 10/02/2004</p>
+  </header>
+  <div class="container">
+    <h2>Tempo decorrido desde 05/01/1993:</h2>
+    <div id="contador">Calculando...</div>
+  </div>
+  <div>
+    <h2><strong>Tempo até 26/06/2034:</strong></h2>
+  </div> 
+  <div id="countdown"></div>
+  <div class="progress-container">
+    <div class="progress-bar" id="progress"></div>
+  </div>
+
+  <footer>
+<hr style="width:50%; height:3px; background-color:blue; border:none; border-radius:5px;">
+    Criado por Luiz • Página de contagem regressiva personalizada
+  </footer>
+
+  <script>
+    const destino = new Date("2034-07-26T00:00:00");
+    const inicio = new Date("1993-01-05T00:00:00");
+    const agora = new Date();
+
+    function atualizarContador() {
+        const dataInicio = new Date(1993, 0, 5, 0, 0, 0); // 05/Jan/1993 às 00:00:00
+
+        let anos = agora.getFullYear() - dataInicio.getFullYear();
+        let meses = agora.getMonth() - dataInicio.getMonth();
+        let dias = agora.getDate() - dataInicio.getDate();
+        let horas = agora.getHours() - dataInicio.getHours();
+        let minutos = agora.getMinutes() - dataInicio.getMinutes();
+        let segundos = agora.getSeconds() - dataInicio.getSeconds();
+
+        // Ajuste de Segundos
+        if (segundos < 0) {
+            minutos--;
+            segundos += 60;
+        }
+
+        // Ajuste de Minutos
+        if (minutos < 0) {
+            horas--;
+            minutos += 60;
+        }
+
+        // Ajuste de Horas
+        if (horas < 0) {
+            dias--;
+            horas += 24;
+        }
+
+        // Ajuste de Dias (considerando o mês anterior)
+        if (dias < 0) {
+            meses--;
+            const ultimoDiaMesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
+            dias += ultimoDiaMesAnterior;
+        }
+
+        // Ajuste de Meses
+        if (meses < 0) {
+            anos--;
+            meses += 12;
+        }
+
+        // Formata com zero à esquerda se for menor que 10
+        const formatar = (num) => num < 10 ? `0${num}` : num;
+
+        document.getElementById('contador').innerHTML = `
+            <span class="destaque">${anos}</span> anos, 
+            <span class="destaque">${meses}</span> meses e 
+            <span class="destaque">${dias}</span> dias<br>
+            <span class="destaque">${formatar(horas)}h ${formatar(minutos)}min ${formatar(segundos)}s</span>
+        `;
+    }
+
+    // Atualiza a cada 1 segundo (1000 milissegundos)
+    setInterval(atualizarContador, 1000);
+
+    // Chama imediatamente para não esperar o primeiro segundo
+    atualizarContador();
+
+    function atualizarContagem() {
+            if (agora >= destino) {
+        document.getElementById("countdown").innerHTML = "Chegou o dia!";
+        document.getElementById("progress").style.width = "100%";
+        document.getElementById("progress").style.background = "red";
+        return;
+      }
+
+      let diff = destino - agora;
+
+      let anos = destino.getFullYear() - agora.getFullYear();
+      let meses = destino.getMonth() - agora.getMonth();
+      let dias = destino.getDate() - agora.getDate();
+
+      if (dias < 0) {
+        meses -= 1;
+        const ultimoMes = new Date(destino.getFullYear(), destino.getMonth(), 0).getDate();
+        dias += ultimoMes;
+      }
+      if (meses < 0) {
+        anos -= 1;
+        meses += 12;
+      }
+
+      const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const segundos = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById("countdown").innerHTML =
+        anos + " anos, " + meses + " meses, " + dias + " dias, " +
+        horas + "h " + minutos + "m " + segundos + "s";
+
+      const total = destino - inicio;
+      const percorrido = agora - inicio;
+      const progresso = (percorrido / total) * 100;
+      const barra = document.getElementById("progress");
+      barra.style.width = progresso + "%";
+
+      if (progresso < 33) {
+        barra.style.background = "linear-gradient(90deg, #00ff88, #00cc44)";
+      } else if (progresso < 66) {
+        barra.style.background = "linear-gradient(90deg, #ffcc00, #ff8800)";
+      } else {
+        barra.style.background = "linear-gradient(90deg, #ff4444, #cc0000)";
+      }
+    }
+
+    setInterval(atualizarContagem, 1000);
+    atualizarContagem();
+  </script>
+</body>
+</html>

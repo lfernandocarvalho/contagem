@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador em Tempo Real</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h2 { margin-bottom: 1.5rem; font-weight: 300; letter-spacing: 1px; }
+        #contador { 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            line-height: 1.6;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .destaque { color: #00d4ff; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Tempo decorrido desde 05/01/1993:</h2>
+    <div id="contador">Calculando...</div>
+</div>
+
+<script>
+    function atualizarContador() {
+        const dataInicio = new Date(1993, 0, 5, 0, 0, 0); // 05/Jan/1993 às 00:00:00
+        const agora = new Date();
+
+        let anos = agora.getFullYear() - dataInicio.getFullYear();
+        let meses = agora.getMonth() - dataInicio.getMonth();
+        let dias = agora.getDate() - dataInicio.getDate();
+        let horas = agora.getHours() - dataInicio.getHours();
+        let minutos = agora.getMinutes() - dataInicio.getMinutes();
+        let segundos = agora.getSeconds() - dataInicio.getSeconds();
+
+        // Ajuste de Segundos
+        if (segundos < 0) {
+            minutos--;
+            segundos += 60;
+        }
+
+        // Ajuste de Minutos
+        if (minutos < 0) {
+            horas--;
+            minutos += 60;
+        }
+
+        // Ajuste de Horas
+        if (horas < 0) {
+            dias--;
+            horas += 24;
+        }
+
+        // Ajuste de Dias (considerando o mês anterior)
+        if (dias < 0) {
+            meses--;
+            const ultimoDiaMesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
+            dias += ultimoDiaMesAnterior;
+        }
+
+        // Ajuste de Meses
+        if (meses < 0) {
+            anos--;
+            meses += 12;
+        }
+
+        // Formata com zero à esquerda se for menor que 10
+        const formatar = (num) => num < 10 ? `0${num}` : num;
+
+        document.getElementById('contador').innerHTML = `
+            <span class="destaque">${anos}</span> anos, 
+            <span class="destaque">${meses}</span> meses e 
+            <span class="destaque">${dias}</span> dias<br>
+            <span class="destaque">${formatar(horas)}h ${formatar(minutos)}min ${formatar(segundos)}s</span>
+        `;
+    }
+
+    // Atualiza a cada 1 segundo (1000 milissegundos)
+    setInterval(atualizarContador, 1000);
+
+    // Chama imediatamente para não esperar o primeiro segundo
+    atualizarContador();
+</script>
+
+</body>
+</html>
